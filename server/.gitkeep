@@ -1,0 +1,4 @@
+cd server
+npm init -y
+npm install express cors dotenv mongoose
+npm install -D nodemon
