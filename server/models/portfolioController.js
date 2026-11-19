@@ -35,3 +35,12 @@ exports.getPortfolios = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+exports.getPortfolioById = async (req, res) => {
+  try {
+    const portfolio = await Portfolio.findById(req.params.id).populate("designer", "name email");
+    if (!portfolio) return res.status(404).json({ message: "Portfolio not found" });
+    res.json(portfolio);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
