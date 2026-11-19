@@ -19,3 +19,19 @@ exports.createPortfolio = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+exports.getPortfolios = async (req, res) => {
+  try {
+    const { category, style, designer } = req.query;
+    const filter = {};
+    if (category) filter.category = category;
+    if (style) filter.style = style;
+    if (designer) filter.designer = designer;
+
+    const portfolios = await Portfolio.find(filter)
+      .populate("designer", "name email")
+      .sort({ createdAt: -1 });
+    res.json(portfolios);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
