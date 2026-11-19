@@ -44,3 +44,16 @@ exports.getPortfolioById = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+exports.deletePortfolio = async (req, res) => {
+  try {
+    const portfolio = await Portfolio.findById(req.params.id);
+    if (!portfolio) return res.status(404).json({ message: "Portfolio not found" });
+    if (portfolio.designer.toString() !== req.user.id)
+      return res.status(403).json({ message: "Not your portfolio" });
+
+    await portfolio.deleteOne();
+    res.json({ message: "Portfolio deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
